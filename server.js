@@ -1,9 +1,9 @@
 const inquirer = require("inquirer");
 const mysql = require("mysql2");
 const cTable = require("console.table");
-const db = require(".");
-const { listenerCount } = require("mysql2/typings/mysql/lib/Connection");
-const PORT = process.env.PORT || 3000;
+// const db = require(".");
+// const { listenerCount } = require("mysql2/typings/mysql/lib/Connection");
+// const PORT = process.env.PORT || 3000;
 
 // connect ot the database
 const connection = mysql.createConnection({
@@ -13,7 +13,12 @@ const connection = mysql.createConnection({
   database: "employee_tracker_db",
 });
 
-start();
+// connect to the database
+connection.connect((err) => {
+  if (err) throw err;
+  console.log("connected!");
+  start();
+});
 
 let start = () => {
   inquirer
@@ -76,12 +81,16 @@ let addDepartment = () => {
       message: "What's the name of the department?",
       name: "dept",
     })
-    .then((res) => {
-      connection.query("INSERT INTO department VALUES (?)", (err, res) => {
-        if (err) throw err;
-        console.table(res);
-        start();
-      });
+    .then((response) => {
+      connection.query(
+        "INSERT INTO department (name) VALUES (?)",
+        [response.dept],
+        (err, res) => {
+          if (err) throw err;
+          console.table(res);
+          start();
+        }
+      );
     });
 };
 
@@ -106,7 +115,8 @@ let addRole = () => {
     ])
     .then((res) => {
       connection.query(
-        "INSERT INTO role (`title`, `salary`, `department_id`) VALUES (?)",
+        "INSERT INTO role (`title`, `salary`, `department_id`) VALUES (?,?,?)",
+        [res.title, res.salary, res.department_id],
         (err, res) => {
           if (err) throw err;
           console.table(res);
@@ -146,11 +156,15 @@ let addEmployee = () => {
       },
     ])
     .then((res) => {
-      connection.query("INSERT INTO employee VALUES (?)", (err, res) => {
-        if (err) throw err;
-        console.table(res);
-        start();
-      });
+      connection.query(
+        "INSERT INTO employee VALUES (?,?,?,?,?)",
+        [res.id, res.first_name, res.last_name, res.role_id, res.employee_id],
+        (err, res) => {
+          if (err) throw err;
+          console.table(res);
+          start();
+        }
+      );
     });
 };
 
