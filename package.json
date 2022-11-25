@@ -1,18 +1,22 @@
 {
-  "name": "namecard",
+  "name": "12-mysql-employee-tracker",
   "version": "1.0.0",
-  "description": "This is an app for generating company name card",
+  "description": "",
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server.js"
   },
-  "author": "Andy",
+  "repository": {
+    "type": "git"
+  },
+  "keywords": [],
+  "author": "",
   "license": "ISC",
   "dependencies": {
     "console.table": "^0.10.0",
-    "inquirer": "^8.2.4",
-    "mysql": "^2.18.1",
-    "mysql2": "^2.3.3"
-  }
+    "inquirer": "^7.3.3",
+    "mysql": "^2.18.1"
+  },
+  "devDependencies": {}
 }
